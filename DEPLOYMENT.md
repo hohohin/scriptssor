@@ -26,7 +26,7 @@ ENVIRONMENT=production
 #### 前端服务 (scriptssor-frontend)
 ```bash
 # API地址配置
-VITE_API_BASE_URL=https://scriptssor-backend.onrender.com
+VITE_API_BASE_URL=https://scriptssor.onrender.com
 PORT=10001
 ```
 
@@ -138,8 +138,8 @@ vercel --prod dist/
 - **前端应用**: 
   - GitHub Pages: https://hohohin.github.io/scriptssor/
   - Netlify/Vercel: 根据你的配置
-- **后端API**: https://scriptssor-backend.onrender.com
-- **API文档**: https://scriptssor-backend.onrender.com/docs
+- **后端API**: https://scriptssor.onrender.com
+- **API文档**: https://scriptssor.onrender.com/docs
 
 ## 监控和日志
 
@@ -183,13 +183,13 @@ vercel --prod dist/
 
 ```bash
 # 查看服务状态
-curl https://scriptssor-backend.onrender.com/
+curl https://scriptssor.onrender.com/
 
 # 查看 API 文档
-curl https://scriptssor-backend.onrender.com/docs
+curl https://scriptssor.onrender.com/docs
 
 # 测试文件上传
-curl -X POST https://scriptssor-backend.onrender.com/upload \
+curl -X POST https://scriptssor.onrender.com/upload \
   -F "file=@test.mp4"
 ```
 
