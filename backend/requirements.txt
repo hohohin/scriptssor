@@ -1,0 +1,10 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+moviepy==1.0.3
+SpeechRecognition==3.10.0
+pydub==0.25.1
+ffmpeg-python==0.2.0
+python-dotenv==1.0.0
+tencentcloud-sdk-python==3.0.1129
+requests==2.31.0
