@@ -96,6 +96,10 @@ uploads/
 # Claude AI
 .claude/
 
+# Frontend build files
+dist/
+frontend/scriptCut/dist/
+
 # Node.js specific
 .npm
 .node_repl_history

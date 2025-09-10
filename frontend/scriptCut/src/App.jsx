@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Upload, Play, Download, Move, Scissors, FileVideo, Mic, CheckCircle, Loader2, RefreshCw } from 'lucide-react';
 import './App.css';
 
-const API_BASE_URL = 'http://127.0.0.1:9002';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:9002';
 
 const App = () => {
   const [videos, setVideos] = useState([]);

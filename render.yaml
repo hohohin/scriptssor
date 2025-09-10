@@ -18,15 +18,3 @@ services:
       mountPath: /app/temp
       sizeGB: 10
     healthCheckPath: /
-    
-  - type: web
-    name: scriptssor-frontend
-    env: docker
-    repo: https://github.com/hohohin/scriptssor.git
-    dockerContext: frontend
-    dockerfilePath: Dockerfile
-    envVars:
-      - key: PORT
-        value: 10001
-      - key: VITE_API_BASE_URL
-        value: https://scriptssor-backend.onrender.com

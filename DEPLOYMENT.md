@@ -1,10 +1,10 @@
-# Render 部署指南
+# Scriptssor 部署指南
 
 ## 项目概述
 
 Scriptssor 是一个文本驱动的视频编辑工具，采用前后端分离架构：
-- **后端**: Python FastAPI + 腾讯云语音识别
-- **前端**: React + Vite
+- **后端**: Python FastAPI + 腾讯云语音识别（部署在 Render）
+- **前端**: React + Vite（静态部署）
 
 ## 部署前准备
 
@@ -39,12 +39,14 @@ PORT=10001
 
 ## 部署步骤
 
-### 方法一：使用 Render Blueprint（推荐）
+### 第一步：部署后端到 Render
+
+#### 方法一：使用 Render Blueprint（推荐）
 
 1. **推送代码到 GitHub**
    ```bash
    git add .
-   git commit -m "Add Render deployment configuration"
+   git commit -m "Update deployment configuration"
    git push origin main
    ```
 
@@ -55,12 +57,10 @@ PORT=10001
    - Render 会自动检测 `render.yaml` 文件
 
 3. **配置环境变量**
-   - 在服务设置中添加上述环境变量
+   - 在服务设置中添加环境变量
    - 设置磁盘存储（10GB 用于临时文件）
 
-### 方法二：手动创建服务
-
-#### 后端服务
+#### 方法二：手动创建服务
 
 1. **创建 Web Service**
    - 类型：Web Service
@@ -80,39 +80,64 @@ PORT=10001
    - 挂载路径：`/app/temp`
    - 大小：10GB
 
-#### 前端服务
+### 第二步：构建和部署前端
 
-1. **创建 Web Service**
-   - 类型：Web Service
-   - 环境：Docker
-   - 仓库：https://github.com/hohohin/scriptssor.git
-   - Docker Context: `frontend`
-   - Dockerfile: `frontend/Dockerfile`
+#### 方法一：GitHub Pages（推荐）
 
-2. **配置环境变量**
+1. **构建前端**
    ```bash
-   PORT=10001
-   VITE_API_BASE_URL=https://scriptssor-backend.onrender.com
+   ./build-frontend.sh
    ```
+
+2. **部署到 GitHub Pages**
+   ```bash
+   ./deploy-gh-pages.sh
+   ```
+
+3. **配置 GitHub Pages**
+   - 进入仓库设置 → Pages
+   - Source 选择 "gh-pages branch"
+   - 等待几分钟后访问：https://hohohin.github.io/scriptssor/
+
+#### 方法二：其他静态托管服务
+
+**Netlify**
+```bash
+# 构建前端
+./build-frontend.sh
+
+# 拖拽 dist 文件夹到 Netlify
+# 或连接 GitHub 仓库自动部署
+```
+
+**Vercel**
+```bash
+# 构建前端
+./build-frontend.sh
+
+# 部署到 Vercel
+vercel --prod dist/
+```
 
 ## 服务配置
 
-### 后端服务配置
+### 后端服务配置（Render）
 - **端口**: 10000
 - **健康检查**: `/`
 - **磁盘存储**: 10GB (用于临时文件和导出)
 - **实例类型**: Standard (推荐)
 
-### 前端服务配置
-- **端口**: 10001
-- **健康检查**: `/`
-- **实例类型**: Standard (推荐)
+### 前端配置（静态托管）
+- **构建输出**: `dist/` 目录
+- **API地址**: 自动配置为后端Render地址
 
 ## 访问应用
 
 部署完成后，你可以通过以下地址访问：
 
-- **前端应用**: https://scriptssor-frontend.onrender.com
+- **前端应用**: 
+  - GitHub Pages: https://hohohin.github.io/scriptssor/
+  - Netlify/Vercel: 根据你的配置
 - **后端API**: https://scriptssor-backend.onrender.com
 - **API文档**: https://scriptssor-backend.onrender.com/docs
 
@@ -170,8 +195,10 @@ curl -X POST https://scriptssor-backend.onrender.com/upload \
 
 ## 成本优化
 
+### 后端成本（Render）
 1. **使用免费套餐**
    - Render 提供免费套餐，适合开发测试
+   - 免费额度：512MB RAM， 512MB 存储
 
 2. **自动扩展**
    - 根据访问量配置自动扩展
@@ -180,6 +207,49 @@ curl -X POST https://scriptssor-backend.onrender.com/upload \
 3. **磁盘清理**
    - 定期清理临时文件
    - 设置文件过期时间
+
+### 前端成本（静态托管）
+1. **GitHub Pages**
+   - 完全免费
+   - 无限流量
+   - 自动HTTPS
+
+2. **Netlify**
+   - 免费套餐：100GB/月
+   - 自动部署和CDN
+   - 表单功能
+
+3. **Vercel**
+   - 免费套餐：100GB/月
+   - 边缘函数
+   - 自动HTTPS
+
+## 部署脚本说明
+
+### 自动化脚本
+
+1. **`build-frontend.sh`**
+   - 构建生产版本前端
+   - 自动设置生产环境API地址
+   - 输出到 `dist/` 目录
+
+2. **`deploy-gh-pages.sh`**
+   - 自动部署到 GitHub Pages
+   - 创建 gh-pages 分支
+   - 配置 .nojekyll 文件
+
+### 使用示例
+
+```bash
+# 1. 构建前端
+./build-frontend.sh
+
+# 2. 部署到 GitHub Pages
+./deploy-gh-pages.sh
+
+# 3. 或手动部署到其他平台
+# 将 dist/ 目录内容上传到你的静态托管服务
+```
 
 ## 安全考虑
 
