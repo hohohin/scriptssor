@@ -17,7 +17,7 @@ RUN npm install lucide-react
 COPY frontend/scriptCut/ ./
 
 # Build the application
-ENV VITE_API_BASE_URL=https://scriptssor-backend.onrender.com
+ENV VITE_API_BASE_URL=https://scriptssor.onrender.com
 RUN npm run build
 
 # Use nginx to serve the static files
