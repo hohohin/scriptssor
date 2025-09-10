@@ -88,6 +88,10 @@ out/
 *.tmp
 *.temp
 .tmp/
+temp/
+temp_uploads/
+processed/
+uploads/
 
 # Claude AI
 .claude/
