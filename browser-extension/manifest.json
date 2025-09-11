@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "ScriptSor Audio Converter",
+  "version": "1.0.0",
+  "description": "Convert video files to WAV format locally before uploading to ScriptSor",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://scriptssor-frontend.onrender.com/*",
+    "https://scriptssor.onrender.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ScriptSor Audio Converter",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://scriptssor-frontend.onrender.com/*",
+        "https://scriptssor.onrender.com/*"
+      ],
+      "js": ["content-script.js"],
+      "css": ["content-script.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["converter.html", "converter.js"],
+      "matches": ["https://scriptssor-frontend.onrender.com/*"]
+    }
+  ]
+}

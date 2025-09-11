@@ -564,10 +564,10 @@ const App = () => {
               
               <div className="plugin-content">
                 <div className="plugin-info">
-                  <h3>Convert Videos Locally - Upload 90% Less Data</h3>
+                  <h3>Browser Extension - Convert Videos Locally</h3>
                   <p className="plugin-description">
-                    Use our local audio converter to transform videos to WAV format before uploading. 
-                    This reduces upload time, saves bandwidth, and protects your privacy.
+                    Install our Chrome extension to convert videos to WAV format right in your browser. 
+                    No local installation required - just click and convert!
                   </p>
                   
                   <div className="plugin-benefits">
@@ -599,19 +599,16 @@ const App = () => {
                   <button 
                     className="btn btn-primary plugin-download-btn"
                     onClick={() => {
-                      // Create download link for the converter
-                      const link = document.createElement('a');
-                      link.href = '/audio_converter.py';
-                      link.download = 'scriptsor_audio_converter.py';
-                      link.click();
+                      // Open browser extension installation page
+                      window.open('/browser-extension/install.html', '_blank');
                     }}
                   >
                     <Download size={16} />
-                    Download Converter
+                    Get Browser Extension
                   </button>
                   
                   <a 
-                    href="/AUDIO_CONVERTER_README.md" 
+                    href="/BROWSER_EXTENSION_README.md" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="btn btn-secondary plugin-docs-btn"

@@ -1,0 +1,131 @@
+/* Content Script Styles for ScriptSor Audio Converter */
+
+/* Extension indicator */
+.scriptsor-extension-indicator {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    backdrop-filter: blur(10px);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* File upload enhancement */
+.scriptsor-enhanced-upload {
+    border: 2px dashed #60a5fa !important;
+    background: rgba(96, 165, 250, 0.1) !important;
+}
+
+.scriptsor-enhanced-upload:hover {
+    border-color: #3b82f6 !important;
+    background: rgba(96, 165, 250, 0.15) !important;
+}
+
+/* Audio file specific styling */
+.scriptsor-audio-file {
+    background: rgba(34, 197, 94, 0.1) !important;
+    border-color: #22c55e !important;
+}
+
+.scriptsor-audio-file .video-icon {
+    background: rgba(34, 197, 94, 0.2) !important;
+    color: #22c55e !important;
+}
+
+/* Progress indicator for extension operations */
+.scriptsor-progress {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 9999;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-width: 200px;
+}
+
+.scriptsor-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.scriptsor-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Success notification */
+.scriptsor-success {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(34, 197, 94, 0.9);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    backdrop-filter: blur(10px);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+/* Error notification */
+.scriptsor-error {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    backdrop-filter: blur(10px);
+    animation: slideDown 0.3s ease-out;
+}
