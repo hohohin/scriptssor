@@ -58,10 +58,11 @@ async def root():
 @app.post("/upload", response_model=VideoUploadResponse)
 async def upload_video(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     """
-    上传视频文件
+    上传视频或音频文件
     """
-    if not file.content_type.startswith('video/'):
-        raise HTTPException(status_code=400, detail="文件必须是视频格式")
+    # 检查文件类型 - 支持视频和音频
+    if not (file.content_type.startswith('video/') or file.content_type.startswith('audio/')):
+        raise HTTPException(status_code=400, detail="文件必须是视频或音频格式")
     
     # 生成唯一ID
     video_id = str(uuid.uuid4())
@@ -86,16 +87,22 @@ async def upload_video(background_tasks: BackgroundTasks, file: UploadFile = Fil
     # 保存到数据库
     Database.add_video(video)
     
+    # 根据文件类型设置不同的处理消息
+    if file.content_type.startswith('audio/'):
+        message = "音频文件上传完成，开始语音识别..."
+    else:
+        message = "视频文件上传完成，开始提取音频..."
+    
     # 创建处理任务
     task = ProcessingTask(
         video_id=video_id,
         status="processing",
         progress=0,
-        message="上传完成，开始处理..."
+        message=message
     )
     Database.add_processing_task(task)
     
-    # 后台处理视频
+    # 后台处理视频/音频
     background_tasks.add_task(video_processor.process_video, video_id, file_path)
     
     return VideoUploadResponse(

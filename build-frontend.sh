@@ -16,7 +16,7 @@ npm install
 
 # 设置生产环境API地址
 echo "🔧 设置生产环境API地址..."
-export VITE_API_BASE_URL="https://scriptssor-backend.onrender.com"
+export VITE_API_BASE_URL="https://scriptssor.onrender.com"
 
 # 构建应用
 echo "🏗️  构建应用..."

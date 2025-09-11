@@ -797,6 +797,118 @@ body {
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
-  line-height: 1.2;
 }
+
+/* Plugin Card Styles */
+.plugin-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.plugin-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.plugin-info h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+}
+
+.plugin-description {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.plugin-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.benefit-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.benefit-item strong {
+  color: #ffffff;
+  font-size: 0.875rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.benefit-item p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.plugin-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.plugin-download-btn,
+.plugin-docs-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.plugin-download-btn {
+  background: #3b82f6;
+  color: white;
+}
+
+.plugin-download-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.plugin-docs-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.plugin-docs-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .plugin-actions {
+    flex-direction: column;
+  }
+  
+  .plugin-download-btn,
+  .plugin-docs-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }

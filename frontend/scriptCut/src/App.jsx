@@ -56,14 +56,14 @@ const App = () => {
 
   // 处理文件上传
   const handleFileUpload = useCallback(async (files) => {
-    const videoFiles = Array.from(files).filter(file => 
-      file.type.includes('video/')
+    const mediaFiles = Array.from(files).filter(file => 
+      file.type.includes('video/') || file.type.includes('audio/')
     );
     
-    if (videoFiles.length === 0) return;
+    if (mediaFiles.length === 0) return;
 
     try {
-      const file = videoFiles[0];
+      const file = mediaFiles[0];
       const formData = new FormData();
       formData.append('file', file);
 
@@ -528,7 +528,7 @@ const App = () => {
             <div className="card upload-card">
               <h2 className="card-title">
                 <Upload size={20} />
-                Upload Videos
+                Upload Media Files
               </h2>
               
               <div
@@ -541,17 +541,84 @@ const App = () => {
                 onDragOver={(e) => e.preventDefault()}
               >
                 <FileVideo size={40} className="upload-icon" />
-                <p className="upload-text">Drop videos here</p>
+                <p className="upload-text">Drop videos or audio files here</p>
                 <p className="upload-subtext">or click to browse</p>
-                <p className="upload-hint">Supports MP4, MOV, AVI</p>
+                <p className="upload-hint">Supports MP4, MOV, AVI, WAV, MP3</p>
                 <input
                   ref={fileInputRef}
                   type="file"
                   multiple
-                  accept="video/*"
+                  accept="video/*,audio/*"
                   className="hidden-input"
                   onChange={(e) => handleFileUpload(e.target.files)}
                 />
+              </div>
+            </div>
+
+            {/* Audio Converter Plugin Section */}
+            <div className="card plugin-card">
+              <h2 className="card-title">
+                <Download size={20} />
+                Audio Converter Plugin
+              </h2>
+              
+              <div className="plugin-content">
+                <div className="plugin-info">
+                  <h3>Convert Videos Locally - Upload 90% Less Data</h3>
+                  <p className="plugin-description">
+                    Use our local audio converter to transform videos to WAV format before uploading. 
+                    This reduces upload time, saves bandwidth, and protects your privacy.
+                  </p>
+                  
+                  <div className="plugin-benefits">
+                    <div className="benefit-item">
+                      <span className="benefit-icon">🚀</span>
+                      <div>
+                        <strong>90% Faster Upload</strong>
+                        <p>Upload audio instead of full video</p>
+                      </div>
+                    </div>
+                    <div className="benefit-item">
+                      <span className="benefit-icon">💰</span>
+                      <div>
+                        <strong>Reduce Costs</strong>
+                        <p>Less bandwidth and storage usage</p>
+                      </div>
+                    </div>
+                    <div className="benefit-item">
+                      <span className="benefit-icon">🔒</span>
+                      <div>
+                        <strong>Privacy First</strong>
+                        <p>Video files never leave your computer</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="plugin-actions">
+                  <button 
+                    className="btn btn-primary plugin-download-btn"
+                    onClick={() => {
+                      // Create download link for the converter
+                      const link = document.createElement('a');
+                      link.href = '/audio_converter.py';
+                      link.download = 'scriptsor_audio_converter.py';
+                      link.click();
+                    }}
+                  >
+                    <Download size={16} />
+                    Download Converter
+                  </button>
+                  
+                  <a 
+                    href="/AUDIO_CONVERTER_README.md" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="btn btn-secondary plugin-docs-btn"
+                  >
+                    View Instructions
+                  </a>
+                </div>
               </div>
             </div>
 
