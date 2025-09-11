@@ -98,60 +98,131 @@ class AudioConverter {
             
             video.src = URL.createObjectURL(videoFile);
             video.crossOrigin = 'anonymous';
+            video.muted = true; // Mute video to avoid audio feedback
             
             video.onloadedmetadata = () => {
                 this.updateProgress(10, 'Loading video...');
                 
+                // Create audio element source
+                const audioElement = new Audio();
+                audioElement.src = video.src;
+                audioElement.crossOrigin = 'anonymous';
+                
+                // Use regular AudioContext for real-time processing
+                const source = audioContext.createMediaElementSource(audioElement);
+                const destination = audioContext.destination;
+                const analyser = audioContext.createAnalyser();
+                
+                source.connect(analyser);
+                analyser.connect(destination);
+                
+                // Create offline context for final rendering
                 const duration = video.duration;
                 const sampleRate = 16000;
                 const channels = 1;
                 const frameCount = Math.floor(duration * sampleRate);
-                
-                // Create offline audio context for rendering
                 const offlineContext = new OfflineAudioContext(channels, frameCount, sampleRate);
-                const source = offlineContext.createMediaElementSource(video);
-                const destination = offlineContext.destination;
                 
-                source.connect(destination);
+                // Create buffer to capture audio data
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                const audioData = [];
                 
-                video.oncanplay = () => {
+                audioElement.oncanplay = () => {
                     this.updateProgress(20, 'Starting conversion...');
                     
-                    // Start video playback
-                    video.play().then(() => {
+                    // Start playback
+                    audioElement.play().then(() => {
                         this.updateProgress(30, 'Processing audio...');
                         
-                        // Start offline rendering
-                        offlineContext.startRendering().then((renderedBuffer) => {
-                            this.updateProgress(80, 'Finalizing...');
+                        // Capture audio data during playback
+                        const captureInterval = setInterval(() => {
+                            analyser.getByteTimeDomainData(dataArray);
+                            audioData.push(new Uint8Array(dataArray));
                             
-                            // Convert to WAV
-                            const wavBlob = this.audioBufferToWav(renderedBuffer);
+                            // Update progress based on playback position
+                            const progress = Math.min(80, 30 + (audioElement.currentTime / duration) * 50);
+                            this.updateProgress(progress, 'Processing audio...');
                             
-                            this.updateProgress(100, 'Complete!');
+                        }, 100); // Capture every 100ms
+                        
+                        audioElement.onended = () => {
+                            clearInterval(captureInterval);
                             
-                            setTimeout(() => {
-                                URL.revokeObjectURL(video.src);
-                                resolve(wavBlob);
-                            }, 500);
-                            
-                        }).catch((error) => {
-                            reject(new Error('Audio rendering failed: ' + error.message));
-                        });
+                            // Process captured audio data
+                            this.processCapturedAudio(audioData, sampleRate, channels, duration)
+                                .then((renderedBuffer) => {
+                                    this.updateProgress(80, 'Finalizing...');
+                                    
+                                    // Convert to WAV
+                                    const wavBlob = this.audioBufferToWav(renderedBuffer);
+                                    
+                                    this.updateProgress(100, 'Complete!');
+                                    
+                                    setTimeout(() => {
+                                        URL.revokeObjectURL(video.src);
+                                        resolve(wavBlob);
+                                    }, 500);
+                                })
+                                .catch((error) => {
+                                    reject(new Error('Audio processing failed: ' + error.message));
+                                });
+                        };
                         
                     }).catch((error) => {
-                        reject(new Error('Video playback failed: ' + error.message));
+                        reject(new Error('Audio playback failed: ' + error.message));
                     });
                 };
                 
-                video.onerror = () => {
-                    reject(new Error('Video loading failed'));
+                audioElement.onerror = () => {
+                    reject(new Error('Audio loading failed'));
                 };
             };
             
             video.onerror = () => {
                 reject(new Error('Video metadata loading failed'));
             };
+        });
+    }
+    
+    async processCapturedAudio(audioData, sampleRate, channels, duration) {
+        return new Promise((resolve, reject) => {
+            try {
+                // Create offline audio context
+                const frameCount = Math.floor(duration * sampleRate);
+                const offlineContext = new OfflineAudioContext(channels, frameCount, sampleRate);
+                
+                // Create audio buffer from captured data
+                const audioBuffer = offlineContext.createBuffer(channels, frameCount, sampleRate);
+                const channelData = audioBuffer.getChannelData(0);
+                
+                // Process captured audio data
+                let sampleIndex = 0;
+                const samplesPerCapture = audioData.length > 0 ? audioData[0].length : 0;
+                const totalSamples = audioData.length * samplesPerCapture;
+                
+                for (let i = 0; i < audioData.length && sampleIndex < frameCount; i++) {
+                    const captureData = audioData[i];
+                    
+                    // Convert 8-bit data to float (-1 to 1)
+                    for (let j = 0; j < captureData.length && sampleIndex < frameCount; j++) {
+                        // Convert 0-255 to -1 to 1
+                        const sample = (captureData[j] - 128) / 128;
+                        channelData[sampleIndex] = sample;
+                        sampleIndex++;
+                    }
+                }
+                
+                // If we didn't get enough data, fill with silence
+                while (sampleIndex < frameCount) {
+                    channelData[sampleIndex] = 0;
+                    sampleIndex++;
+                }
+                
+                resolve(audioBuffer);
+            } catch (error) {
+                reject(error);
+            }
         });
     }
     
