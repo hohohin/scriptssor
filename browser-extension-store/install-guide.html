@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ScriptSor Extension Installation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            border-bottom-color: #60a5fa;
+            color: #60a5fa;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card h2 {
+            color: #60a5fa;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .step::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step h3 {
+            margin: 0 0 10px 0;
+            color: white;
+        }
+        
+        .step p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+        
+        .step img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .highlight {
+            background: rgba(96, 165, 250, 0.2);
+            border: 1px solid rgba(96, 165, 250, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .highlight h3 {
+            color: #60a5fa;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 10px 10px 10px 0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning h3 {
+            color: #f87171;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #60a5fa;
+        }
+        
+        .timeline-item h4 {
+            margin: 0 0 5px 0;
+            color: #60a5fa;
+        }
+        
+        .timeline-item p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+                border-bottom: none;
+                border-right: 2px solid transparent;
+            }
+            
+            .tab.active {
+                border-right-color: #60a5fa;
+                border-bottom-color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">S</div>
+            <h1>ScriptSor Extension</h1>
+            <p class="subtitle">Choose your installation method</p>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('developer')">Developer Mode</div>
+            <div class="tab" onclick="showTab('store')">Chrome Web Store</div>
+        </div>
+        
+        <div id="developer" class="tab-content active">
+            <div class="card">
+                <h2>Developer Mode Installation</h2>
+                <p>Install the extension now using Chrome's developer mode. This method is safe and allows you to use the extension immediately.</p>
+                
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-content">
+                            <h3>Download Extension Files</h3>
+                            <p>Download the complete extension package:</p>
+                            <a href="/scriptsor-audio-converter-v1.0.0.zip" class="btn">
+                                📥 Download Extension (ZIP)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-content">
+                            <h3>Extract the ZIP File</h3>
+                            <p>Right-click the downloaded ZIP file and select "Extract All..." to a folder on your computer.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-content">
+                            <h3>Open Chrome Extensions</h3>
+                            <p>Type <code>chrome://extensions/</code> in your Chrome address bar and press Enter.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-content">
+                            <h3>Enable Developer Mode</h3>
+                            <p>Toggle the "Developer mode" switch in the top-right corner of the page.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-content">
+                            <h3>Load Extension</h3>
+                            <p>Click the "Load unpacked" button and select the extracted extension folder.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-content">
+                            <h3>Success!</h3>
+                            <p>The extension will appear in your browser toolbar. Click the ScriptSor icon to start using it!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="warning">
+                    <h3>⚠️ Security Notice</h3>
+                    <p>This is a secure extension that processes videos locally in your browser. No video files are sent to external servers during conversion.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="store" class="tab-content">
+            <div class="card">
+                <h2>Chrome Web Store (Coming Soon)</h2>
+                <p>We're currently preparing the extension for the Chrome Web Store. This will make installation even easier!</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Extension Development</h4>
+                        <p>✅ Complete - Extension fully functional</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>Chrome Web Store Review</h4>
+                        <p>🔄 In Progress - Awaiting approval</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>Store Availability</h4>
+                        <p>⏳ Estimated: 1-2 weeks</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>One-Click Installation</h4>
+                        <p>🔮 Future - Install directly from Chrome Web Store</p>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <h3>Benefits of Chrome Web Store</h3>
+                    <ul>
+                        <li>✅ Automatic updates</li>
+                        <li>✅ Easy one-click installation</li>
+                        <li>✅ Verified developer status</li>
+                        <li>✅ User reviews and ratings</li>
+                        <li>✅ Better discoverability</li>
+                    </ul>
+                </div>
+                
+                <div class="warning">
+                    <h3>Temporary Solution</h3>
+                    <p>While we wait for Chrome Web Store approval, please use the Developer Mode installation method above. It's just as secure and functional!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Need Help?</h2>
+            <p>If you encounter any issues during installation:</p>
+            <ul>
+                <li>Check that you're using Google Chrome browser</li>
+                <li>Ensure you have extracted the ZIP file completely</li>
+                <li>Make sure you're selecting the correct folder (containing manifest.json)</li>
+                <li>Try restarting Chrome after enabling developer mode</li>
+            </ul>
+            
+            <a href="mailto:support@scriptsor.com" class="btn btn-secondary">
+                📧 Contact Support
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        // Check if ZIP file exists
+        fetch('/scriptsor-audio-converter-v1.0.0.zip')
+            .then(response => {
+                if (!response.ok) {
+                    document.querySelector('.btn[href="/scriptsor-audio-converter-v1.0.0.zip"]').style.display = 'none';
+                }
+            })
+            .catch(() => {
+                document.querySelector('.btn[href="/scriptsor-audio-converter-v1.0.0.zip"]').style.display = 'none';
+            });
+    </script>
+</body>
+</html>

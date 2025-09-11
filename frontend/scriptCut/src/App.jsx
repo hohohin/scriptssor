@@ -599,8 +599,9 @@ const App = () => {
                   <button 
                     className="btn btn-primary plugin-download-btn"
                     onClick={() => {
-                      // Open browser extension installation page
-                      window.open('/browser-extension/install.html', '_blank');
+                      // Open Chrome Web Store (will be updated after store approval)
+                      alert('Extension will be available on Chrome Web Store soon! For now, please use developer mode installation.');
+                      window.open('/browser-extension-store/install-guide.html', '_blank');
                     }}
                   >
                     <Download size={16} />
