@@ -169,21 +169,9 @@ Ensure your repository contains:
    npm install lucide-react
    
    # Build with production API URL
-   export VITE_API_BASE_URL=https://your-backend.onrender.com
+   VITE_API_BASE_URL
    npm run build
    ```
-
-2. **Deploy to GitHub Pages**
-   - Copy the contents of `dist/` to your `gh-pages` branch
-   - Enable GitHub Pages in repository settings
-   - Set source to `gh-pages` branch
-
-#### Option 2: Netlify/Vercel
-
-1. **Connect your repository** to Netlify or Vercel
-2. **Set build command**: `cd frontend/scriptCut && npm install && npm install lucide-react && npm run build`
-3. **Set publish directory**: `frontend/scriptCut/dist`
-4. **Add environment variable**: `VITE_API_BASE_URL=https://your-backend.onrender.com`
 
 ## 🔧 Configuration
 
